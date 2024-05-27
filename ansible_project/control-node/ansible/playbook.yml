@@ -1,23 +1,21 @@
-- hosts: managed_nodes
+---
+- name: Setup managed nodes
+  hosts: managed_nodes
   tasks:
-    - name: Nginx'i yükle
+    - name: Install Nginx
       apt:
         name: nginx
         state: present
+      become: yes
 
-    - name: Please create virtual host file
-      copy:
-        dest: /etc/nginx/sites-enabled/default
-        content: |
-          server {
-            listen 80;
-            location / {
-              root /var/www/html;
-              index index.html;
-            }
-          }
-
-    - name: index.html dosyasını oluştur
+    - name: Create index.html
       copy:
         dest: /var/www/html/index.html
-        content: "Hello I am marvin, from {{ inventory_hostname }}"
+        content: "<html><body><h1>Hello from Ansible</h1></body></html>"
+      become: yes
+
+    - name: Start Nginx
+      service:
+        name: nginx
+        state: started
+
