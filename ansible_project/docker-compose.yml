@@ -1,4 +1,4 @@
-version: "3"
+version: "3.9"
 
 services:
   control-node:
@@ -9,7 +9,7 @@ services:
     volumes:
       - ./control-node/ansible:/etc/ansible
     ports:
-      - "2222:22"
+      - "2233:22"
     tty: true
 
   managed-node1:
@@ -18,8 +18,8 @@ services:
       dockerfile: Dockerfile
     container_name: managed-node1
     ports:
-      - "2200:22"
-      - "8081:80"
+      - "2205:22"
+      - "8083:80"
     tty: true
 
   managed-node2:
@@ -28,6 +28,6 @@ services:
       dockerfile: Dockerfile
     container_name: managed-node2
     ports:
-      - "2201:22"
-      - "8082:80"
+      - "2206:22"
+      - "8084:80"
     tty: true
