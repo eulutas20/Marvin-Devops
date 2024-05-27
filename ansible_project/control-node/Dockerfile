@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:latest
 
 # I update package lists and install necessary dependencies
 RUN apt-get update && \
@@ -21,7 +21,7 @@ COPY ansible/inventory /etc/ansible/hosts
 COPY ansible/playbook.yml /etc/ansible/playbook.yml
 
 # I install and configure the SSH server
-# The SSH server is installed and configured to allow root login
+# The SSH server is installed and configured to allow root loginn
 RUN apt-get install -y openssh-server && \
     mkdir /var/run/sshd && \
     echo 'root:password' | chpasswd && \
