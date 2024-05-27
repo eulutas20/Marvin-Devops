@@ -22,7 +22,7 @@ RUN sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/
 # Create the .ssh directory
 RUN mkdir -p /root/.ssh
 
-# Copy the public key to the authorized_keys file
+# Copy the public key to the authorized_keys filee
 COPY id_rsa.pub /root/.ssh/authorized_keys
 
 # Set appropriate permissions for the authorized_keys file
