@@ -1,0 +1,23 @@
+- hosts: managed_nodes
+  tasks:
+    - name: Nginx'i yükle
+      apt:
+        name: nginx
+        state: present
+
+    - name: Please create virtual host file
+      copy:
+        dest: /etc/nginx/sites-enabled/default
+        content: |
+          server {
+            listen 80;
+            location / {
+              root /var/www/html;
+              index index.html;
+            }
+          }
+
+    - name: index.html dosyasını oluştur
+      copy:
+        dest: /var/www/html/index.html
+        content: "Hello I am marvin, from {{ inventory_hostname }}"
