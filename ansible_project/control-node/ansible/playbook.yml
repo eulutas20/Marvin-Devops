@@ -28,22 +28,22 @@
               }
           }
 
-    - name: Create symbolic link to sites-enabled
-      file:
-        src: /etc/nginx/sites-available/default
-        dest: /etc/nginx/sites-enabled/default
-        state: link
-
     - name: Create index.html
       copy:
         dest: /var/www/html/index.html
         content: |
           <html>
           <head>
-              <title>Welcome to Nginx!</title>
+              <title>Welcome to Nginx World!</title>
           </head>
           <body>
               <h1>Success! The Nginx server is installed and running.</h1>
+          </body>
+           <body>
+              <h1> We are the champsssss</h1>
+          </body>
+          <body>
+              <h1> Selamun Aleykum </h1>
           </body>
           </html>
 
