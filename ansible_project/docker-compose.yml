@@ -11,6 +11,8 @@ services:
     ports:
       - "2233:22"
     tty: true
+    networks:
+      - ansible-network
 
   managed-node1:
     build:
@@ -18,9 +20,11 @@ services:
       dockerfile: Dockerfile
     container_name: managed-node1
     ports:
-      - "2205:22"
-      - "8083:80"
+      - "2222:22"
+      - "8081:80"
     tty: true
+    networks:
+      - ansible-network
 
   managed-node2:
     build:
@@ -28,6 +32,12 @@ services:
       dockerfile: Dockerfile
     container_name: managed-node2
     ports:
-      - "2206:22"
-      - "8084:80"
+      - "2223:22"
+      - "8082:80"
     tty: true
+    networks:
+      - ansible-network
+
+networks:
+  ansible-network:
+    driver: bridge

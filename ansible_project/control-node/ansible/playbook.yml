@@ -1,21 +1,54 @@
 ---
-- name: Setup managed nodes
+- name: Configure and deploy web server
   hosts: managed_nodes
+  become: yes
+
   tasks:
     - name: Install Nginx
       apt:
         name: nginx
         state: present
-      become: yes
+        update_cache: yes
+
+    - name: Create Nginx virtual host file
+      copy:
+        dest: /etc/nginx/sites-enabled/default
+        content: |
+          server {
+              listen 80 default_server;
+              listen [::]:80 default_server;
+              
+              root /var/www/html;
+              index index.html;
+              
+              server_name _;
+              
+              location / {
+                  try_files $uri $uri/ =404;
+              }
+          }
+
+    - name: Create symbolic link to sites-enabled
+      file:
+        src: /etc/nginx/sites-available/default
+        dest: /etc/nginx/sites-enabled/default
+        state: link
 
     - name: Create index.html
       copy:
         dest: /var/www/html/index.html
-        content: "<html><body><h1>Hello from Ansible</h1></body></html>"
-      become: yes
+        content: |
+          <html>
+          <head>
+              <title>Welcome to Nginx!</title>
+          </head>
+          <body>
+              <h1>Success! The Nginx server is installed and running.</h1>
+          </body>
+          </html>
 
-    - name: Start Nginx
+    - name: Ensure Nginx is running
       service:
         name: nginx
         state: started
-
+        enabled: yes

@@ -1,37 +1,20 @@
-FROM ubuntu:latest
-
-# I update package lists and install necessary dependencies
+FROM python:3.9-slim
+# Temel paketlerin kurulumu
 RUN apt-get update && \
     apt-get install -y python3 openssh-server && \
-    apt-get clean
+    mkdir /var/run/sshd
 
-# I configure the SSH server
-# Create the necessary runtime directory for SSH
-RUN mkdir /var/run/sshd
+# Gerekli dizinlerin oluşturulması
+RUN mkdir -p /root/.ssh && mkdir /var/run/sshd
 
-# Set the root password to 'password'
-RUN echo 'root:password' | chpasswd
-
-# Allow root login by modifying the SSH configuration
-RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-
-# Enable password authentication by modifying the SSH configuration
-RUN sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
-
-# I set up SSH keys
-# Create the .ssh directory
-RUN mkdir -p /root/.ssh
-
-# Copy the public key to the authorized_keys filee
+# SSH anahtarlarının kopyalanması
 COPY id_rsa.pub /root/.ssh/authorized_keys
 
-# Set appropriate permissions for the authorized_keys file
+# SSH anahtar izinlerinin ayarlanması
 RUN chmod 600 /root/.ssh/authorized_keys
 
-# I expose ports 22 and 80
-# Port 22 is for SSH access
-# Port 80 is for potential web server access in the future
+# Portların açılması
 EXPOSE 22 80
 
-# I start the SSH server
+# SSH sunucusunun çalışması
 CMD ["/usr/sbin/sshd", "-D"]
